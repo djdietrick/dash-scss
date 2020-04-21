@@ -1,0 +1,21 @@
+{
+  "name": "dash-scss",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "preferGlobal": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "dash-scss": "bin/index"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chalk": "^4.0.0",
+    "inquirer": "^7.1.0",
+    "inquirer-fuzzy-path": "^2.2.0",
+    "lodash": "^4.17.15"
+  }
+}
