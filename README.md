@@ -3,8 +3,8 @@ NPM tool for generating boilerplate scss files and structure.
 # To Install
 
 ```
-git clone http://github.com/djdietrick/scss-init
-cd scss-init
+git clone http://github.com/djdietrick/dash-scss
+cd dash-scss
 npm install
 npm link
 ```
@@ -12,7 +12,7 @@ npm link
 # To Use
 
 * Navigate to directory you would like to install your styles folder.
-* Run `scss-init`
+* Run `dash-scss`
 ** Enter path where you would like to install the `/styles` directory (defaults to current directory)
 ** Choose which additional features you will need in your project
 * Include your main.scss file where necessary in your application
