@@ -1,0 +1,24 @@
+$font: "Lato";
+@import url('https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900');
+
+$default-font-size: 1.6rem;
+
+$h1-font-weight: 100;
+$h1-font-size: 5rem;
+$h1-letter-spacing: 1rem;
+$h1-color: $color-primary;
+
+$h2-font-weight: 100;
+$h2-font-size: 3rem;
+$h2-letter-spacing: 0.1rem;
+$h2-color: $color-secondary;
+
+$h3-font-weight: 700;
+$h3-font-size: $default-font-size;
+$h3-letter-spacing: 0.2rem;
+$h3-color: $color-secondary;
+
+$p-font-weight: 300;
+$p-font-size: $default-font-size;
+$p-letter-spacing: 0.2rem;
+$p-color: $color-white;

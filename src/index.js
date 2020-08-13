@@ -9,6 +9,7 @@ inquirer.registerPrompt('fuzzypath', require('inquirer-fuzzy-path'));
 let abstracts = [];
 let components = [];
 let layouts = [];
+let themes = [];
 let stylesPath;
 
 // Gets all defaults and pushes them to arrays used for options
@@ -21,6 +22,12 @@ async function initDefaults() {
 
     const layoutDefaults = await getFilesInDir(getDefaultsPath('layouts'));
     layouts.push(...layoutDefaults);
+
+    const themeDefaults = fs.readdirSync(getDefaultsPath('themes'), { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name)
+    themes.push(...themeDefaults);
+    console.log(themes);
 }
 
 // Checks which of the defaults are already installed and marks them as checked
@@ -84,7 +91,7 @@ async function init() {
             itemType: 'directory',
             default: './',
             depthLimit: 5,
-            excludePath: nodePath => nodePath.startsWith('node_modules'),
+            excludePath: nodePath => nodePath.startsWith('node_modules') || nodePath.startsWith('.git'),
             excludeFilter: nodePath => nodePath == '.',
         },
         {
@@ -99,6 +106,14 @@ async function init() {
                 new inquirer.Separator(chalk.green('Layout')),
                 ...layouts
             ]
+        },
+        {
+            type: 'list',
+            message: chalk.cyan('Select theme:'),
+            name: 'theme',
+            choices: [
+                ...themes
+            ]
         }
     ]
     
@@ -112,35 +127,49 @@ async function init() {
     await copyDefault('base', 'typography');
     await copyDefault('base', 'variables');
     
-    abstracts = abstracts.filter((func) => answers.features.includes(func.name));
+    abstracts = abstracts.filter((func) => answers.features.includes(func));
     if(abstracts.length) await mkDir(path.join(stylesPath, '/abstracts'));
     for(let i = 0; i < abstracts.length; i++) {
-        if(!abstracts[i])
-        await copyDefault('abstracts', abstracts[i].name.toLowerCase());
+        await copyDefault('abstracts', abstracts[i].toLowerCase());
     }
 
-    components = components.filter((func) => answers.features.includes(func.name));
+    components = components.filter((func) => answers.features.includes(func));
     if(components.length) await mkDir(path.join(stylesPath, '/components'));
     for(let i = 0; i < components.length; i++) {
-        await copyDefault('components', components[i].name.toLowerCase());
+        await copyDefault('components', components[i].toLowerCase());
     }
 
-    layouts = layouts.filter((func) => answers.features.includes(func.name));
+    layouts = layouts.filter((func) => answers.features.includes(func));
     if(layouts.length) await mkDir(path.join(stylesPath, '/layouts'));
     for(let i = 0; i < layouts.length; i++) {
-        await copyDefault('layouts', layouts[i].name.toLowerCase());
+        await copyDefault('layouts', layouts[i].toLowerCase());
     }
+
+    const theme = answers.theme;
+    await mkDir(path.join(stylesPath, '/theme'));
+    await copyThemeDefault(theme, 'colors');
+    await copyThemeDefault(theme, 'text');
+    await copyThemeDefault(theme, 'components');
 
     let str = '';
 
+    str += `@import "theme/colors";\n`;
+    str += `@import "theme/text";\n`;
+    str += `@import "theme/components";\n`;
+
     for(let i = 0; i < abstracts.length; i++) {
-        str += `@import "abstracts/${abstracts[i].name.toLowerCase()}";\n`;
+        str += `@import "abstracts/${abstracts[i].toLowerCase()}";\n`;
     }
+
+    str += `@import "base/base";\n`;
+    str += `@import "base/typography";\n`;
+    str += `@import "base/variables";\n`;
+
     for(let i = 0; i < components.length; i++) {
-        str += `@import "components/${components[i].name.toLowerCase()}";\n`;
+        str += `@import "components/${components[i].toLowerCase()}";\n`;
     }
     for(let i = 0; i < layouts.length; i++) {
-        str += `@import "layouts/${layouts[i].name.toLowerCase()}";\n`;
+        str += `@import "layouts/${layouts[i].toLowerCase()}";\n`;
     }
 
     await fs.writeFileSync(path.join(stylesPath, 'main.scss'), str);
@@ -200,8 +229,13 @@ async function mkDir(path) {
 
 // Copy a file from defaults
 async function copyDefault(dir, file) {
-    await fs.copyFileSync(path.join(__dirname, '/defaults/', dir, '_' + file +'.scss'), 
+    await fs.copyFileSync(path.join(__dirname, '../defaults/', dir, '_' + file +'.scss'), 
         path.join(stylesPath,  dir, '_' + file +'.scss'));
+}
+
+async function copyThemeDefault(theme, file) {
+    await fs.copyFileSync(path.join(__dirname, '../defaults/themes/', theme, '_' + file + '.scss'),
+        path.join(stylesPath, 'theme', '_' + file + '.scss'));
 }
 
 async function main() {

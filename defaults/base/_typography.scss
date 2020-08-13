@@ -1,54 +1,89 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap');
-
 body {
-    font-family: "Roboto", sans-serif;
+    font-family: $font, sans-serif;
     font-weight: 400;
+    /*font-size: 16px;*/
     line-height: 1.7;
-    color: $color-grey-dark;
-    padding: 3rem;
+    color: $color-grey-light-1;
 }
 
-.heading-primary {
-    color: $color-primary;
-    text-transform: uppercase;
-
-    backface-visibility: hidden;
-
-    &--main {
-        display: block;
-        font-size: 6rem;
-        font-weight: 400;
-        letter-spacing: 3.5rem;
-    }
-    
-    &--sub {
-        display: block;
-        font-size: 2rem;
-        font-weight: 700;
-        letter-spacing: 1.75rem;
-    }
-}
-
-.heading-secondary {
-    font-size: 3.5rem;
-    font-weight: 400;
-    display: inline-block;
-    //color: $color-primary-light;
-    letter-spacing: .1rem;
-}
-
-.heading-tertiary {
-    font-size: 2rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    color: $color-secondary;
-}
-
-.paragraph {
-    font-size: $default-font-size;
+a {
     color: $color-primary-light;
+    text-decoration: none;
+}
 
-    // &:not(:last-child) {
-    //     margin-bottom: 3rem;
-    // }
+h1 {
+    display: block;
+    backface-visibility: hidden;
+    margin-bottom: 6rem;
+    text-transform: uppercase;
+
+    color: $h1-color;
+    font-weight: $h1-font-weight;
+    font-size: $h1-font-size;
+    letter-spacing: $h1-letter-spacing;
+
+    animation-name: fadeIn;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+}
+
+h2 {
+    text-transform: italic;
+    display: inline-block;
+    transition: all .2s;
+
+    font-size: $h2-font-size;
+    font-weight: $h2-font-weight;
+    letter-spacing: $h2-letter-spacing;
+    color: $h2-color;
+}
+
+h3 {
+    text-transform: uppercase;
+
+    font-weight: $h3-font-weight;
+    font-size: $h3-font-size;
+    letter-spacing: $h3-letter-spacing;
+    color: $h3-color;
+}
+
+p {
+    font-size: $p-font-size;
+    font-weight: $p-font-weight;
+    letter-spacing: $p-letter-spacing;
+    color: $p-color;
+
+    &:not(:last-child) {
+        margin-bottom: 3rem;
+    }
+}
+
+.text {
+    &--primary {
+        color: $color-primary;
+    }
+    &--secondary {
+        color: $color-secondary;
+    }
+    &--tertiary {
+        color: $color-tertiary;
+    }
+    &--white {
+        color: $color-white;
+    }
+    &--black {
+        color: $color-black;
+    }
+    &--gradient {
+        -webkit-background-clip: text;
+        color: transparent;
+        background-image: linear-gradient(to right, $color-primary-light, $color-primary-dark);
+
+        &--secondary {
+            background-image: linear-gradient(to right, $color-secondary-light, $color-secondary-dark);
+        }
+        &--tertiary {
+            background-image: linear-gradient(to right, $color-tertiary-light, $color-tertiary-dark);
+        }
+    }
 }
